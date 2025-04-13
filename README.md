@@ -16,6 +16,13 @@ The goal of this repository is to understad how node.js and web browsers deal wi
 Enables Node.js to perform non-blocking I/o Operations, by ofloading operations to the system kernel whenever possible. 
 
 ### Phases of the event loop
+* Timers: executes callbacks shceduled by setTimeot() and setInterval
+* Pending callbacks: executes I/O callbacks deferred to the next loop iteration
+* Idle, prepare: only used internally.
+* Poll: retrieve new I/O events; execute I/O related callbacks (almost all with the exception of close callbacks, the ones scheduled by timers, and setImmediate()); node will block here when appropriate.
+* Check: setImmediate() callbacks are invoked here.
+* Close callbacks: some close callbacks, e.g. socket.on('close', ...)
+
 Each ohase has a FIFO queue ofcallbacks to execute. When the event loop enters a given phase, it will perform any operations specific to that phase, then execute callbacks in that phase's queue until the queue has been exhausted or the maximum number of callbacks has executed.
 
 
